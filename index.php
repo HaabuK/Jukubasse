@@ -26,18 +26,26 @@
 
 
 <style>
+body{
+  display: flex;
+  flex-direction: column;
+  //min-height: 100%;
+  padding-top: 30px;
+  padding-bottom: 150px;
+}
 footer {
   text-align: center;
   align-items: center;
-  justify-content: left;
-  font-size: 25px;
-  background-color: lightGray;
+  justify-content: center;
+  font-size: 15px;
+  background-color: lightgray;
   color: black;
   position: fixed;
   bottom: 0px;
   display: flex;
-  height: 40px;
+  height: 20px;
   width: 100%;
+  margin-left:-10px;
 }
 header {
   text-align: center;
@@ -51,17 +59,7 @@ header {
   display: flex;
   height: 40px;
   width: 100%;
-}
-html {
-  height: 100%;
-}
-body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-.content {
-  flex: 1;
+  margin-left:-10px;
 }
 .btn {
   background-color: lightgray; 
