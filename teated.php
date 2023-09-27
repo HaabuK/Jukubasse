@@ -1,64 +1,67 @@
-<link rel="icon" href="favicon.png" sizes="16x16" type="image/png">
 <?php
 require ($_SERVER["DOCUMENT_ROOT"]."/../config.php");
 global $yhendus;
-$kask = $yhendus->prepare("SELECT id, pealkiri, sisu FROM lehed");
+?>
+<!doctype html>
+<html>
+<head>
+<title>Teated lehel</title>
+<style type="text/css">
+#menyykiht{
+float: left;
+padding-right: 30px;
+}
+#sisukiht{
+float:left;
+}
+#jalusekiht{
+clear: left;
+}
+</style>
+<meta charset="utf-8" />
+</head>
+<body>
+<div id="menyykiht">
+<h2>Teated</h2>
+<ul>
+<?php
+$kask=$yhendus->prepare("SELECT id, pealkiri FROM lehed");
+$kask->bind_result($id, $pealkiri);
+$kask->execute();
+while($kask->fetch()){
+echo "<li><a href='?id=$id'>".
+htmlspecialchars($pealkiri)."</a></li>";
+}
+?>
+</ul>
+</div>
+<div id="sisukiht">
+<?php
+if(isSet($_REQUEST["id"])){
+$kask=$yhendus->prepare("SELECT id, pealkiri, sisu FROM lehed
+WHERE id=?");
+//Kysim2rgi asemele pannakse aadressiribalt tulnud id,
+//eeldatakse, et ta on tyybist integer (i).
+//(double - d, string - s)
+$kask->bind_param("i", $_REQUEST["id"]);
 $kask->bind_result($id, $pealkiri, $sisu);
 $kask->execute();
-
-
+if($kask->fetch()){
+echo "<h2>".htmlspecialchars($pealkiri)."</h2>";
+echo htmlspecialchars($sisu);
+} else {
+echo "Vigased andmed.";
+}
+} else {
+echo "Tere tulemast avalehele! Vali men&uuml;&uuml;st sobiv teema.";
+}
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width-device-width, initial scale=1.0">
-  <title>Teated lehel</title>
-</head>
-<header>
-<a href="https://karl-hendrikhaabu22.thkit.ee/kippar">Kippar pealehele<br></a>
-</header>
-<body>
-  <h1>Teadete loetelu</h1>
-  <?php
-  while($kask->fetch()){
-  echo "<h2>".htmlspecialchars($pealkiri)."</h2>";
-  echo "<div>".htmlspecialchars($sisu)."</div>";
-  }
-  echo "<br><br><br>"
-  ?>
+</div>
+<div id="jalusekiht">
+Lehe tegi Jaagup
+</div>
 </body>
 </html>
 <?php
 $yhendus->close();
 ?>
-<footer>Karl Haabu, TARge22</footer>
-
-<style>
-footer {
-  text-align: center;
-  align-items: center;
-  justify-content: left;
-  font-size: 25px;
-  background-color: lightGray;
-  color: black;
-  position: fixed;
-  bottom: 0px;
-  display: flex;
-  height: 40px;
-  width: 100%;
-}
-header {
-  text-align: center;
-  align-items: center;
-  justify-content: left;
-  font-size: 25px;
-  background-color: lightGray;
-  color: black;
-  position: fixed;
-  top: 0px;
-  display: flex;
-  height: 40px;
-  width: 100%;
-}
-</style>
