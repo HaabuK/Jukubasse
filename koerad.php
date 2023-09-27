@@ -30,7 +30,7 @@ if(isSet($_REQUEST["uusleht"])){
 float: left;
 padding-top: 40px;
 padding-right: 30px;
-width:200px;
+width:20%;
 }
 #sisukiht{
 direction: flex;
@@ -41,8 +41,8 @@ text-align: center;
 align-items: center;
 justify-content: center;
 display: flex;
-width:1200px;
-height:600px;
+width:70%;
+height:70%;
 }
 </style>
 <meta charset="utf-8" />
@@ -56,12 +56,12 @@ $kask=$yhendus->prepare("SELECT id, koeranimi, kirjeldus, pildiaadress FROM koer
 $kask->bind_result($id, $koeranimi, $kirjeldus, $pildiaadress);
 $kask->execute();
 while($kask->fetch()){
-echo "<li><h2><a href='?id=$id'>".
+echo "<li><h2><a style=\"color: black\"; href='?id=$id'>".
 htmlspecialchars($koeranimi)."</a></h2></li>";
 }
 ?>
 </ul>
-<a href='?lisamine=jah'>Lisa ...</a>
+<a href='?lisamine=jah'><button class="nupp"><i class="fa fa-home"></i> Lisa..</button></a>
 </div>
 <div id="sisukiht">
 <ul>
@@ -75,8 +75,8 @@ $kask->execute();
 if($kask->fetch()){
 echo "<h2>".htmlspecialchars($koeranimi)."</h2>";
 echo htmlspecialchars($kirjeldus)."<br><br>";
-echo  "<a href=\"koerad.php\"><img style=\"width: 800px; height: 500px\" src=$pildiaadress  /></a>";
-echo "<br /><a href='?kustutusid=$id'>kustuta</a>";
+echo  "<a href=\"koerad.php\"><img style=\"width: 800px; height: 500px; pointer-events: none;\" src=$pildiaadress /></a>";
+echo "<br /><a href='?kustutusid=$id'><button class=\"del\"><i class==\"fa fa-home\"></i>Kustuta</button></a>";
 } else {
 echo "Vigased andmed.";
 }
@@ -89,7 +89,7 @@ else if(isSet($_REQUEST["lisamine"])){
   <dl>
   <dt>Koera nimi:</dt>
   <dd>
-  <input type="text" name="koeranimi" />
+  <input style="margin-right: 40px; margin-bottom: 10px;" type="text" name="koeranimi" />
   </dd>
   <dt>Kirjeldus:</dt>
   <dd>
@@ -113,6 +113,10 @@ $yhendus->close();
 ?>
 
 <style>
+textarea{
+  margin-right: 40px;
+  margin-bottom: 10px;
+}
 footer {
   text-align: center;
   align-items: center;
@@ -152,6 +156,38 @@ header {
 
 .btn:hover {
   background-color: black;
+}
+
+.nupp {
+  background-color: gray; 
+  border: none; 
+  color: black; 
+  padding: 11px 20px; 
+  font-size: 16px; 
+  cursor: pointer;
+  border-radius:20px
+}
+
+.nupp:hover {
+  background-color: black;
+  color: white;
+}
+.del {
+  background-color: #FF9A84; 
+  border: none; 
+  color: black; 
+  padding: 11px 20px; 
+  font-size: 16px; 
+  cursor: pointer;
+  border-radius:20px
+}
+
+.del:hover {
+  background-color: red;
+  color: black;
+}
+::selection{
+  color: green;
 }
 </style>
 <footer>Karl Haabu, TARge22</footer>
