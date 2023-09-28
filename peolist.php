@@ -2,15 +2,15 @@
 require ($_SERVER["DOCUMENT_ROOT"]."/../config.php");
 global $yhendus;
 if(isSet($_REQUEST["uusleht"])){
-  $kask=$yhendus->prepare("INSERT INTO koerad (koeranimi, kirjeldus, pildiaadress) VALUES (?, ?, ?)");
-  $kask->bind_param("sss", $_REQUEST["koeranimi"], $_REQUEST["kirjeldus"], $_REQUEST["pildiaadress"]);
+  $kask=$yhendus->prepare("INSERT INTO peokylalised (eesnimi, perenimi, epost) VALUES (?, ?, ?)");
+  $kask->bind_param("sss", $_REQUEST["eesnimi"], $_REQUEST["perenimi"], $_REQUEST["epost"]);
   $kask->execute();
   header("Location: $_SERVER[PHP_SELF]");
   $yhendus->close();
   exit();
   }
   if(isSet($_REQUEST["kustutusid"])){
-  $kask=$yhendus->prepare("DELETE FROM koerad WHERE id=?");
+  $kask=$yhendus->prepare("DELETE FROM peokylalised WHERE id=?");
   $kask->bind_param("i", $_REQUEST["kustutusid"]);
   $kask->execute();
   }
@@ -20,44 +20,24 @@ if(isSet($_REQUEST["uusleht"])){
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width-device-width, initial scale=1.0">
-  <title>Koerad</title>
+  <title>Peokülalised</title>
 </head>
 <header>
 <a href="https://karl-hendrikhaabu22.thkit.ee/kippar"><button class="btn"><i class="fa fa-home"></i> Kippar</button><br></a>
 </header>
-<style type="text/css">
-#menyykiht{
-float: left;
-padding-top: 40px;
-padding-right: 30px;
-width:20%;
-}
-#sisukiht{
-direction: flex;
-float:center;
-padding-top: 40px;
-padding-right: 30px;
-text-align: center;
-align-items: center;
-justify-content: center;
-display: flex;
-width:70%;
-height:70%;
-}
-</style>
 <meta charset="utf-8" />
 </head>
 <body>
 <div id="menyykiht">
-<h2><a style="color: black" href="https://karl-hendrikhaabu22.thkit.ee/kippar/koerad.php">Koerad</a></h2>
+<h2><a style="color: black" href="https://karl-hendrikhaabu22.thkit.ee/kippar/peolist.php"> Peole registreerunud</a></h2>
 <ul>
 <?php
-$kask=$yhendus->prepare("SELECT id, koeranimi, kirjeldus, pildiaadress FROM koerad");
-$kask->bind_result($id, $koeranimi, $kirjeldus, $pildiaadress);
+$kask=$yhendus->prepare("SELECT id, eesnimi, perenimi, epost FROM peokylalised");
+$kask->bind_result($id, $eesnimi, $perenimi, $epost);
 $kask->execute();
 while($kask->fetch()){
 echo "<li><h2><a style=\"color: black\"; href='?id=$id'>".
-htmlspecialchars($koeranimi)."</a></h2></li>";
+htmlspecialchars($eesnimi)." ".htmlspecialchars($perenimi)."</a></h2></li>";
 }
 ?>
 </ul>
@@ -67,15 +47,16 @@ htmlspecialchars($koeranimi)."</a></h2></li>";
 <ul>
 <?php
 if(isSet($_REQUEST["id"])){
-$kask=$yhendus->prepare("SELECT id, koeranimi, kirjeldus, pildiaadress FROM koerad
+$kask=$yhendus->prepare("SELECT id, eesnimi, perenimi, epost FROM peokylalised
 WHERE id=?");
 $kask->bind_param("i", $_REQUEST["id"]);
-$kask->bind_result($id, $koeranimi, $kirjeldus, $pildiaadress);
+$kask->bind_result($id, $eesnimi, $perenimi, $epost);
 $kask->execute();
 if($kask->fetch()){
-echo "<h2>".htmlspecialchars($koeranimi)."</h2>";
-echo htmlspecialchars($kirjeldus)."<br><br>";
-echo  "<a href=\"koerad.php\"><img style=\"width: 800px; height: 500px; pointer-events: none;\" src=$pildiaadress /></a>";
+echo "<h2 style=\"font-size:40px\">".htmlspecialchars($eesnimi)." ".htmlspecialchars($perenimi)."<br><br></h2>";
+echo "<h2 style=\"font-size:30px\">"."Eesnimi: ".htmlspecialchars($eesnimi)."<br></h2>";
+echo "<h2 style=\"font-size:30px\">"."Perekonna nimi: ".htmlspecialchars($perenimi)."<br></h2>";
+echo "<h2 style=\"font-size:30px\">"."E-mail: ".htmlspecialchars($epost)."<br></h2>";
 echo "<br /><a href='?kustutusid=$id'><button class=\"del\"><i class==\"fa fa-home\"></i>Kustuta</button></a>";
 } else {
 echo "Vigased andmed.";
@@ -85,26 +66,26 @@ else if(isSet($_REQUEST["lisamine"])){
   ?>
   <form action='?'>
   <input type="hidden" name="uusleht" value="jah" />
-  <h2>Uue koera lisamine</h2>
+  <h2>Külalise lisamine</h2>
   <dl>
-  <dt>Koera nimi:</dt>
+  <dt>Eesnimi:</dt>
   <dd>
-  <input style="margin-right: 40px; margin-bottom: 10px;" type="text" name="koeranimi" />
+  <input style="margin-right: 40px; margin-bottom: 10px;" type="text" name="eesnimi" />
   </dd>
-  <dt>Kirjeldus:</dt>
+  <dt>Perekonna nimi:</dt>
   <dd>
-  <textarea rows="10" name="kirjeldus"></textarea>
+  <input style="margin-right: 40px; margin-bottom: 10px;" type="text" name="perenimi" />
   </dd>
-  <dt>Pilt:</dt>
+  <dt>E-mail:</dt>
   <dd>
-  <input style="margin-right: 40px; margin-bottom: 10px;" type="url" name="pildiaadress" />
+  <input style="margin-right: 40px; margin-bottom: 10px;" type="email" name="epost" />
   </dd>
   </dl>
   <input type="submit" value="sisesta">
   </form>
   <?php
   }else {
-    echo "Tere tulemast avalehele! Vali men&uuml;&uuml;st sobiv teema.";
+    echo "Tere tulemast avalehele! Vali men&uuml;&uuml;st registreerunu.";
   } 
   ?>
   </div>
@@ -113,9 +94,39 @@ $yhendus->close();
 ?>
 
 <style>
-textarea{
-  margin-right: 40px;
-  margin-bottom: 10px;
+#menyykiht{
+background-color: lightgray;
+border-radius:20px;
+float: left;
+margin-top: 40px;
+margin-right: 30px;
+padding-left:10px;
+padding-bottom:10px;
+width:20%;
+}
+body{
+height: 100vh;
+overflow-y: hidden;
+
+
+background-image: url("taust1.jpg");
+background-position: bottom;
+background-repeat: no-repeat;
+background-size: cover;
+}
+#sisukiht{
+direction: flex;
+float:center;
+margin-top: 80px;
+padding-top: -40px;
+text-align: center;
+align-items: center;
+justify-content: center;
+display: flex;
+width:70%;
+height:70%;
+background-color: lightgray;
+border-radius:20px;
 }
 footer {
   text-align: center;
