@@ -24,6 +24,8 @@ if(isSet($_REQUEST["uusleht"])){
 </head>
 <header>
 <a href="https://karl-hendrikhaabu22.thkit.ee/kippar"><button class="btn"><i class="fa fa-home"></i> Kippar</button><br></a>
+<a href="https://karl-hendrikhaabu22.thkit.ee/kippar/syndmused.php"><button class="btn"><i class="fa fa-home"></i> Ajakava</button><br></a>
+<a href="https://karl-hendrikhaabu22.thkit.ee/kippar/syndmusadmin.php"><button class="btn"><i class="fa fa-home"></i> Ajakava muutmine</button><br></a>
 </header>
 <meta charset="utf-8" />
 </head>
@@ -94,7 +96,7 @@ $yhendus->close();
 ?>
 
 <style>
-#menyykiht{
+  #menyykiht{
 background-color: lightgray;
 border-radius:20px;
 float: left;
@@ -103,10 +105,13 @@ margin-right: 30px;
 padding-left:10px;
 padding-bottom:10px;
 width:20%;
+max-height: 70%;
+overflow-x: auto;
 }
 body{
 height: 100vh;
 overflow-y: hidden;
+overflow-x: hidden;
 
 
 background-image: url("taust1.jpg");

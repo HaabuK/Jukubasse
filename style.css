@@ -1,0 +1,72 @@
+footer {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    background-color: lightgray;
+    color: black;
+    position: fixed;
+    bottom: 0px;
+    display: flex;
+    height: 20px;
+    width: 100%;
+    margin-left:-10px;
+  }
+  header {
+    text-align: center;
+    align-items: center;
+    justify-content: left;
+    font-size: 25px;
+    background-color: lightGray;
+    color: black;
+    position: fixed;
+    top: 0px;
+    display: flex;
+    height: 40px;
+    width: 100%;
+    margin-left:-10px;
+  }
+  .btn {
+    background-color: lightgray; 
+    border: none; 
+    color: white; 
+    padding: 11px 20px; 
+    font-size: 16px; 
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    background-color: black;
+  }
+  
+  .nupp {
+    background-color: gray; 
+    border: none; 
+    color: black; 
+    padding: 11px 20px; 
+    font-size: 16px; 
+    cursor: pointer;
+    border-radius:20px
+  }
+  
+  .nupp:hover {
+    background-color: black;
+    color: white;
+  }
+  .del {
+    background-color: #FF9A84; 
+    border: none; 
+    color: black; 
+    padding: 11px 20px; 
+    font-size: 16px; 
+    cursor: pointer;
+    border-radius:20px
+  }
+  
+  .del:hover {
+    background-color: red;
+    color: black;
+  }
+  ::selection{
+    color: green;
+  }

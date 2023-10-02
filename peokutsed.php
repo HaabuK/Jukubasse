@@ -4,10 +4,16 @@ global $yhendus;
 if(isSet($_REQUEST["uusleht"])){
   $kask=$yhendus->prepare("INSERT INTO peokylalised (eesnimi, perenimi, epost) VALUES (?, ?, ?)");
   $kask->bind_param("sss", $_REQUEST["eesnimi"], $_REQUEST["perenimi"], $_REQUEST["epost"]);
-  $kask->execute();
-  header("Location: $_SERVER[PHP_SELF]");
-  $yhendus->close();
-  exit();
+    if(strlen($_REQUEST["eesnimi"]) == 0){
+        header("Location: $_SERVER[PHP_SELF]");
+        $yhendus->close();
+        exit();
+    } else{
+        $kask->execute();
+        header("Location: $_SERVER[PHP_SELF]");
+        $yhendus->close();
+        exit();
+    }
   }
 ?>
 <!DOCTYPE html>
@@ -24,7 +30,6 @@ if(isSet($_REQUEST["uusleht"])){
 </head>
 <body>
 <div id="sisukiht">
-<!-- <h2><a style="color: black" href="https://karl-hendrikhaabu22.thkit.ee/kippar/koerad.php">Lisa ennast peo nimekirja</a></h2> -->
 <ul>
 <?php
 $kask=$yhendus->prepare("SELECT id, eesnimi, perenimi, epost FROM peokylalised");
@@ -55,9 +60,10 @@ if(isSet($_REQUEST["lisamine"])){
   </form>
   <?php
   }else {
-    echo "<h1>"."Tere tulemast avalehele!"."<br><br>"." Lisa ennast nimekirja!"."<h1>";
+    echo "<h1>"."Tere tulemast!"."<br><br>"." Lisa ennast nimekirja!"."<h1>";
     ?>
     <a href='?lisamine=jah'><button class="nupp"><i class="fa fa-home"></i> Lisa..</button></a>
+    <a href="https://karl-hendrikhaabu22.thkit.ee/kippar/syndmused.php"><button class="nupp"><i class="fa fa-home"></i> Ajakava</button></a>
     <?php
   }
   ?>
