@@ -4,12 +4,12 @@ global $yhendus;
 if(isSet($_REQUEST["uusleht"])){
   $kask=$yhendus->prepare("INSERT INTO peokylalised (eesnimi, perenimi, epost) VALUES (?, ?, ?)");
   $kask->bind_param("sss", $_REQUEST["eesnimi"], $_REQUEST["perenimi"], $_REQUEST["epost"]);
-    if(strlen($_REQUEST["eesnimi"]) == 0){
+    if(strlen($_REQUEST["eesnimi"]) != 0 && strlen($_REQUEST["perenimi"]) != 0 && strlen($_REQUEST["epost"]) != 0){
+        $kask->execute();
         header("Location: $_SERVER[PHP_SELF]");
         $yhendus->close();
         exit();
     } else{
-        $kask->execute();
         header("Location: $_SERVER[PHP_SELF]");
         $yhendus->close();
         exit();
@@ -43,15 +43,15 @@ if(isSet($_REQUEST["lisamine"])){
   <dl>
   <dt style="font-size: 25px">Eesnimi:</dt>
   <dd>
-  <input style="margin-right: 40px; margin-bottom: 10px; font-size: 25px" type="text" name="eesnimi" />
+  <input style="margin-right: 40px; margin-bottom: 10px; font-size: 25px" type="name" name="eesnimi" label="Eesnimi" />
   </dd>
   <dt style="font-size: 25px">Perekonnanimi:</dt>
   <dd>
-  <input style="margin-right: 40px; margin-bottom: 10px; font-size: 25px" type="text" name="perenimi" />
+  <input style="margin-right: 40px; margin-bottom: 10px; font-size: 25px" type="lastname" name="perenimi" label="Perekonnanimi" />
   </dd>
   <dt style="font-size: 25px">E-posti aadress:</dt>
   <dd>
-  <input style="margin-right: 40px; margin-bottom: 10px; font-size: 25px" type="text" name="epost" />
+  <input style="margin-right: 40px; margin-bottom: 10px; font-size: 25px" type="email" name="epost" label="E-mail" />
   </dd>
   </dl>
   <br>
